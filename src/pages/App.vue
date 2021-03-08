@@ -77,6 +77,7 @@ export default {
 <style lang="less">
 .content {
   padding: 0 30px;
+  height: 100%;
 }
 .main {
   .h-layout {

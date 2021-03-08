@@ -1,8 +1,16 @@
 <template>
   <div class="tasks">
-    <Button icon="h-icon-plus" class="h-btn h-btn-primary h-btn-circle">
+    <Button
+      icon="h-icon-plus"
+      class="h-btn h-btn-primary h-btn-circle"
+      @click="openModal"
+    >
       Adicionar Uma nova Task
     </Button>
+    <Modal v-model="modalIsOpen">
+      <TaskForm />
+    </Modal>
+    <Loading text="Carregando Tarefas" :loading="loadingTasks"></Loading>
     <div v-for="task in allTask" :key="task.id">
       <div>
         <div class="h-panel">
@@ -71,7 +79,6 @@
             </span>
           </div>
           <div class="h-panel-body">
-
             <Collapse>
               <CollapseItem title="Descrição:">
                 {{ task.description }}
@@ -86,12 +93,29 @@
 
 <script>
 import { mapActions } from 'vuex';
+import TaskForm from '../taskForm/index';
 export default {
   name: 'CardProps',
+  data: function() {
+    return {
+      modalIsOpen: false,
+    };
+  },
+  computed:{
+   loadingTasks: function(){
+     return this.allTask.length ? false : true
+   },
+  },
+  components: {
+    TaskForm: TaskForm,
+  },
   props: {
     allTask: Array,
   },
   methods: {
+    openModal: function() {
+      this.modalIsOpen = true;
+    },
     ...mapActions(['alterValues']),
   },
 };
