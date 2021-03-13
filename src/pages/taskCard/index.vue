@@ -11,8 +11,8 @@
       <TaskForm />
     </Modal>
     <Loading text="Carregando Tarefas" :loading="loadingTasks"></Loading>
-    <div v-for="task in allTask" :key="task.id">
-      <div>
+    <div class="taskContainer">
+      <div v-for="task in allTask" :key="task.id">
         <div class="h-panel">
           <div class="h-panel-bar">
             <span class="h-panel-title">
@@ -27,6 +27,9 @@
                   :class="task.completed ? 'h-icon-check' : 'h-icon-close'"
                 ></i>
                 {{ task.completed ? 'Concluido' : 'Pendente' }}
+              </span>
+              <span :class="'tag h-tag h-tag'">
+                <i class="h-icon-calendar"></i> Prazo: {{ task.deadline }}
               </span>
               <span v-if="task.priority === 'Alta'" class="tag h-tag h-tag-red">
                 Prioridade: {{ task.priority }}
@@ -43,25 +46,10 @@
               >
                 Prioridade: {{ task.priority }}
               </span>
-              <span :class="'tag h-tag h-tag'">
-                <i class="h-icon-calendar"></i> Prazo: {{ task.deadline }}
-              </span>
             </span>
             <span class="">
               <div class="buttons">
-                <ButtonGroup>
-                  <Button
-                    @click="
-                      alterValues({ id: task.id, completed: !task.completed })
-                    "
-                    :class="task.completed ? 'h-btn h-btn-primary' : ''"
-                  >
-                    {{
-                      task.completed
-                        ? 'Marcar como pendente'
-                        : 'Marcar como concluida'
-                    }}
-                  </Button>
+                <ButtonGroup size="s">
                   <Button
                     class="h-btn h-btn-text-yellow h-btn-transparent"
                     icon="h-icon-edit"
@@ -78,8 +66,20 @@
               </div>
             </span>
           </div>
+
           <div class="h-panel-body">
-            <Collapse>
+            <Button
+              size="l"
+              @click="alterValues({ id: task.id, completed: !task.completed })"
+              :class="task.completed ? 'h-btn h-btn-primary' : ''"
+            >
+              {{
+                task.completed
+                  ? 'Marcar como pendente'
+                  : 'Marcar como concluida'
+              }}
+            </Button>
+            <Collapse class="Collapse">
               <CollapseItem title="Descrição:">
                 {{ task.description }}
               </CollapseItem>
@@ -101,10 +101,10 @@ export default {
       modalIsOpen: false,
     };
   },
-  computed:{
-   loadingTasks: function(){
-     return this.allTask.length ? false : true
-   },
+  computed: {
+    loadingTasks: function() {
+      return this.allTask.length ? false : true;
+    },
   },
   components: {
     TaskForm: TaskForm,
@@ -126,17 +126,51 @@ export default {
   margin-left: auto;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
 h-btn-circle {
   justify-items: flex-start;
   display: none;
 }
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
 
 .buttons button {
   margin-bottom: 8px;
+}
+
+.taskContainer {
+  padding: 5%;
+  width: 100%;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.taskContainer .h-panel {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 8px;
+}
+
+.Collapse {
+  width: 235px;
+}
+
+
+@media (max-width: 800px) {
+  .taskContainer .h-panel {
+    width: 235px;
+  }
+  .Collapse {
+    width: 100%;
+  }
+  .h-btn.h-btn-primary.h-btn-circle{
+  margin: 5px 20px;
+}
 }
 </style>
