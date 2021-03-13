@@ -8,7 +8,7 @@
       Adicionar Uma nova Task
     </Button>
     <Modal v-model="modalIsOpen">
-      <TaskForm />
+      <TaskForm @closeModelBtn="closeModal" />
     </Modal>
     <Loading text="Carregando Tarefas" :loading="loadingTasks"></Loading>
     <div class="taskContainer">
@@ -116,6 +116,9 @@ export default {
     openModal: function() {
       this.modalIsOpen = true;
     },
+    closeModal: function() {
+      this.modalIsOpen = false;
+    },
     ...mapActions(['alterValues']),
   },
 };
@@ -149,7 +152,7 @@ h-btn-circle {
   flex-wrap: wrap;
 }
 .taskContainer .h-panel {
-  width: 280px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

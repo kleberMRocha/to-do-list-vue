@@ -31,7 +31,7 @@
             >
           </p>
 
-          <TaskCard :allTask="allTask" />
+          <TaskCard :allTask="allTask"/>
         </Content>
       </Layout>
     </Layout>
@@ -62,6 +62,8 @@ export default {
   components: {
     TaskCard: taskCard,
   },
+  methods:{
+  },
   computed: {
     ...mapState({
       allTask: (state) => state,
@@ -70,8 +72,11 @@ export default {
         return total.length;
       },
       percentage: (state) => {
-        const total = state.filter((task) => task.completed != true);
-        return Math.floor(100 - (total.length * 100) / 3);
+        const totalPending = state.filter((task) => task.completed != true).length;
+        const totalTasks = state.length;
+
+        return Number(100 - (totalPending * 100)/totalTasks);
+ 
       },
       hoje: () => {
         const hoje = new Date();

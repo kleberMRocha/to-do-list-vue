@@ -7,7 +7,7 @@
       "startDate": "03/03/2021",
       "finishDate": "07/03/2021",
       "deadline": "06/03/2021",
-      "completed": true,
+      "completed": false,
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley"
     },
     {
@@ -27,7 +27,7 @@
       "startDate": "06/03/2021",
       "finishDate": "06/03/2021",
       "deadline": "10/03/2021",
-      "completed": true,
+      "completed": false,
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley"
     },
     {
@@ -67,7 +67,7 @@
       "startDate": "06/03/2021",
       "finishDate": "06/03/2021",
       "deadline": "10/03/2021",
-      "completed": false,
+      "completed": true,
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley"
     },
     {
