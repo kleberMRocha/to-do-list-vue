@@ -30,7 +30,6 @@
               ></Progress
             >
           </p>
-
           <TaskCard :allTask="allTask"/>
         </Content>
       </Layout>
@@ -147,6 +146,7 @@ export default {
   }
   .tasks {
     background: url('../assets/bg.jpg');
+    background-repeat: repeat-y;
     border-radius: 15px;
     height: 100%;
     widows: 100%;

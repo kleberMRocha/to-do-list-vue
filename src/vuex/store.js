@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { uuid } from 'uuidv4';
-import {GetValues, alterValue} from './apiActionsServices';
+import {GetValues, alterValue, addValue, deleteValue} from './apiActionsServices';
 
 Vue.use(Vuex);
 
@@ -12,8 +11,6 @@ mutations:{
         state.push(...tasks);
     },
     addTask:(state, task) => {
-        const id = uuid();
-        task.id = id;
         state.push(task);
     },
     removeTask:(state, id) =>{
@@ -41,6 +38,18 @@ actions: {
         alterValue(data)
         .then(resposen => { 
             commit('changeTakStatus', resposen.id);
+        }).catch(erro => console.log(erro))
+    },
+    addValue({commit}, data){
+        addValue(data)
+        .then(reponse => {
+            commit('addTask', reponse)
+        }).catch(erro => console.log(erro))
+    },
+    removeValue({commit},id){
+        deleteValue(id)
+        .then(() => {
+            commit('removeTask', id);
         }).catch(erro => console.log(erro))
     }
   }

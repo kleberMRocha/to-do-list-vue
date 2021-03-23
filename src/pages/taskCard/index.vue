@@ -10,28 +10,36 @@
     <Modal v-model="modalIsOpen">
       <TaskForm @closeModelBtn="closeModal" />
     </Modal>
-    <Loading text="Carregando Tarefas" :loading="loadingTasks"></Loading>
+    <Loading
+      text="Carregando Tarefas"
+      :loading="loadingTasks"
+    ></Loading>
     <div class="taskContainer">
-      <div v-for="task in allTask" :key="task.id">
+      <div
+        v-for="task in allTask"
+        :key="task.id"
+      >
         <div class="h-panel">
           <div class="h-panel-bar">
             <span class="h-panel-title">
               {{ task.task }}
+              
               <span
                 class="tag"
                 :class="
                   task.completed ? 'h-tag h-tag-primary' : 'h-tag h-tag-red'
                 "
               >
-                <i
-                  :class="task.completed ? 'h-icon-check' : 'h-icon-close'"
-                ></i>
+                <i :class="task.completed ? 'h-icon-check' : 'h-icon-close'"></i>
                 {{ task.completed ? 'Concluido' : 'Pendente' }}
               </span>
               <span :class="'tag h-tag h-tag'">
                 <i class="h-icon-calendar"></i> Prazo: {{ task.deadline }}
               </span>
-              <span v-if="task.priority === 'Alta'" class="tag h-tag h-tag-red">
+              <span
+                v-if="task.priority === 'Alta'"
+                class="tag h-tag h-tag-red"
+              >
                 Prioridade: {{ task.priority }}
               </span>
               <span
@@ -47,26 +55,7 @@
                 Prioridade: {{ task.priority }}
               </span>
             </span>
-            <span class="">
-              <div class="buttons">
-                <ButtonGroup size="s">
-                  <Button
-                    class="h-btn h-btn-text-yellow h-btn-transparent"
-                    icon="h-icon-edit"
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    class="h-btn h-btn-text-red h-btn-transparent"
-                    icon="h-icon-trash"
-                  >
-                    Deletar
-                  </Button>
-                </ButtonGroup>
-              </div>
-            </span>
           </div>
-
           <div class="h-panel-body">
             <Button
               size="l"
@@ -79,7 +68,26 @@
                   : 'Marcar como concluida'
               }}
             </Button>
-            <Collapse class="Collapse">
+            <div class="btnContainer">
+              <div class="buttons">
+                <ButtonGroup size="s">
+                  <Button
+                    class="h-btn h-btn-text-yellow h-btn-transparent"
+                    icon="h-icon-edit"
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                   @click="confirm(task.id)"
+                    class="h-btn h-btn-text-red h-btn-transparent"
+                    icon="h-icon-trash"
+                  >
+                    Deletar
+                  </Button>
+                </ButtonGroup>
+              </div>
+            </div>
+                 <Collapse class="Collapse">
               <CollapseItem title="Descrição:">
                 {{ task.description }}
               </CollapseItem>
@@ -96,13 +104,16 @@ import { mapActions } from 'vuex';
 import TaskForm from '../taskForm/index';
 export default {
   name: 'CardProps',
-  data: function() {
+  data: function () {
     return {
       modalIsOpen: false,
     };
   },
   computed: {
-    loadingTasks: function() {
+    loadingTasks: function () {
+      if(this.allTask.length === 0){
+        return false;
+      }
       return this.allTask.length ? false : true;
     },
   },
@@ -113,13 +124,23 @@ export default {
     allTask: Array,
   },
   methods: {
-    openModal: function() {
+    openModal: function () {
       this.modalIsOpen = true;
     },
-    closeModal: function() {
+    closeModal: function () {
       this.modalIsOpen = false;
     },
-    ...mapActions(['alterValues']),
+     confirm(id) {
+      this.$Confirm('Deletar a Tarefa?', 'Deletar?')
+        .then(() => {
+          this.removeValue(id);
+          this.$Message.success('A tarefa foi deletada');
+        })
+        .catch(() => {
+          this.$Message.error('Ação cancelada');
+        });
+    },
+    ...mapActions(['alterValues','addValue', 'removeValue']),
   },
 };
 </script>
@@ -138,6 +159,9 @@ h-btn-circle {
   justify-items: flex-start;
   display: none;
 }
+.btnContainer{
+  margin: 15px 0;
+}
 
 .buttons button {
   margin-bottom: 8px;
@@ -147,12 +171,12 @@ h-btn-circle {
   padding: 5%;
   width: 100%;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
 .taskContainer .h-panel {
-  width: 400px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -164,7 +188,6 @@ h-btn-circle {
   width: 235px;
 }
 
-
 @media (max-width: 800px) {
   .taskContainer .h-panel {
     width: 235px;
@@ -172,8 +195,8 @@ h-btn-circle {
   .Collapse {
     width: 100%;
   }
-  .h-btn.h-btn-primary.h-btn-circle{
-  margin: 5px 20px;
-}
+  .h-btn.h-btn-primary.h-btn-circle {
+    margin: 5px 20px;
+  }
 }
 </style>

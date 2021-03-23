@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "json-server --watch db.json"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -15,6 +16,7 @@
     "less": "2.7.2",
     "uuidv4": "^6.2.6",
     "vue": "^2.6.11",
+    "vue-i18n": "^8.24.2",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },
