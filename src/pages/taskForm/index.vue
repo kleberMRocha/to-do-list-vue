@@ -18,6 +18,8 @@
         prop="task"
       >
         <input
+          value="batata"
+          v-wordlimit="30"
           :required="required"
           type="text"
           v-model="data.task"
@@ -60,16 +62,17 @@
         ></textarea>
       </FormItem>
       <FormItem>
-        <Button
-          color="primary"
-          :loading="isLoading"
-          @click="submit"
-        >
+        <Button v-if="!isEditar" :loading="isLoading" @click="submit">
           Adicionar
         </Button>
+         <Button v-else :loading="isLoading" @click="submit">
+          Atualizar
+        </Button>
+        
         <Button @click="closeModelBtn">Cancelar</Button>
       </FormItem>
     </Form>
+    {{task}}
   </div>
 </template>
 <script>
@@ -78,6 +81,7 @@ export default {
   data () {
     return {
       loading: false,
+      isEditar: this.Editar,
       format: "DD/MM/YYYY",
       isLoading: false,
       required: true,
@@ -112,6 +116,7 @@ export default {
       }
     }
   },
+  props: ['task', 'Editar'],
   computed: {
     hoje: () => {
       const hoje = new Date();

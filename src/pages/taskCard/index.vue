@@ -1,5 +1,12 @@
 <template>
-  <div class="tasks">
+  <Row :space="4">
+   <div class="tasks">
+   <Modal v-model="modalIsOpen" v-if="!isEditar">
+      <TaskForm @closeModelBtn="closeModal"  
+          :Editar="isEditar" 
+          :task="isEditar ? task : null" 
+      />
+    </Modal>
     <Button
       icon="h-icon-plus"
       class="h-btn h-btn-primary h-btn-circle"
@@ -7,9 +14,6 @@
     >
       Adicionar Uma nova Task
     </Button>
-    <Modal v-model="modalIsOpen">
-      <TaskForm @closeModelBtn="closeModal" />
-    </Modal>
     <Loading
       text="Carregando Tarefas"
       :loading="loadingTasks"
@@ -19,24 +23,21 @@
         v-for="task in allTask"
         :key="task.id"
       >
+        <Modal v-model="modalIsOpen">
+      <TaskForm @closeModelBtn="closeModal"  
+          :Editar="isEditar" 
+          :task="isEditar ? task : null" 
+      />
+    </Modal>
         <div class="h-panel">
           <div class="h-panel-bar">
-            <span class="h-panel-title">
-              {{ task.task }}
-              
-              <span
-                class="tag"
-                :class="
-                  task.completed ? 'h-tag h-tag-primary' : 'h-tag h-tag-red'
-                "
-              >
-                <i :class="task.completed ? 'h-icon-check' : 'h-icon-close'"></i>
-                {{ task.completed ? 'Concluido' : 'Pendente' }}
-              </span>
-              <span :class="'tag h-tag h-tag'">
-                <i class="h-icon-calendar"></i> Prazo: {{ task.deadline }}
-              </span>
-              <span
+            <Cell width="24">
+              <div>
+                <span class="h-panel-title">
+
+                {{ task.task }}
+
+                  <span
                 v-if="task.priority === 'Alta'"
                 class="tag h-tag h-tag-red"
               >
@@ -54,24 +55,47 @@
               >
                 Prioridade: {{ task.priority }}
               </span>
+      
+              <span
+                class="tag"
+                :class="
+                  task.completed ? 'h-tag h-tag-primary' : 'h-tag h-tag-red'
+                "
+              >
+                <i :class="task.completed ? 'h-icon-check' : 'h-icon-close'"></i>
+                {{ task.completed ? 'Concluido' : 'Pendente' }}
+              </span>
+              <span :class="'tag h-tag h-tag'">
+                <i class="h-icon-calendar"></i> Prazo: {{ task.deadline }}
+              </span>
             </span>
+              </div>
+            </Cell>
+          
           </div>
           <div class="h-panel-body">
-            <Button
+             <Cell width="24">
+              <Button
               size="l"
+              :block="true"
               @click="alterValues({ id: task.id, completed: !task.completed })"
               :class="task.completed ? 'h-btn h-btn-primary' : ''"
             >
+             <i class="h-icon-complete"></i> 
               {{
                 task.completed
                   ? 'Marcar como pendente'
                   : 'Marcar como concluida'
               }}
             </Button>
-            <div class="btnContainer">
+
+             </Cell>
+              <Cell width="24">
+               <div class="btnContainer">
               <div class="buttons">
                 <ButtonGroup size="s">
                   <Button
+                    @click="openModalEditar"
                     class="h-btn h-btn-text-yellow h-btn-transparent"
                     icon="h-icon-edit"
                   >
@@ -87,16 +111,20 @@
                 </ButtonGroup>
               </div>
             </div>
-                 <Collapse class="Collapse">
+              </Cell>
+                <Cell width="24">
+                <Collapse class="Collapse">
               <CollapseItem title="Descrição:">
                 {{ task.description }}
               </CollapseItem>
             </Collapse>
+                </Cell>
           </div>
         </div>
       </div>
     </div>
   </div>
+  </Row>
 </template>
 
 <script>
@@ -106,6 +134,7 @@ export default {
   name: 'CardProps',
   data: function () {
     return {
+      isEditar: false,
       modalIsOpen: false,
     };
   },
@@ -125,10 +154,15 @@ export default {
   },
   methods: {
     openModal: function () {
+      this.isEditar = false;
       this.modalIsOpen = true;
     },
     closeModal: function () {
       this.modalIsOpen = false;
+    },
+    openModalEditar: function () {
+      this.isEditar = true;
+      this.modalIsOpen = true;
     },
      confirm(id) {
       this.$Confirm('Deletar a Tarefa?', 'Deletar?')
@@ -161,6 +195,8 @@ h-btn-circle {
 }
 .btnContainer{
   margin: 15px 0;
+  display: flex;
+  justify-content: center;
 }
 
 .buttons button {
@@ -176,7 +212,7 @@ h-btn-circle {
   flex-wrap: wrap;
 }
 .taskContainer .h-panel {
-  width: 300px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -185,7 +221,7 @@ h-btn-circle {
 }
 
 .Collapse {
-  width: 235px;
+  width: 100%;
 }
 
 @media (max-width: 800px) {

@@ -26,7 +26,7 @@
             <Progress :percent="percentage"
               ><span slot="title"> Concluidas</span
               ><span slot="text"
-                ><span class="primary-color"></span>{{ percentage }} %</span
+                ><span class="primary-color"></span>{{ Number(percentage) || '0' }} %</span
               ></Progress
             >
           </p>
@@ -121,7 +121,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: .9rem;
+  font-size: 1.9rem;
 
 }
 
