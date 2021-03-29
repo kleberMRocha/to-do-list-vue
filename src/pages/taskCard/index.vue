@@ -1,10 +1,12 @@
 <template>
   <Row :space="4">
    <div class="tasks">
-   <Modal v-model="modalIsOpen" v-if="!isEditar">
-      <TaskForm @closeModelBtn="closeModal"  
-          :Editar="isEditar" 
-          :task="isEditar ? task : null" 
+   <Modal v-model="modalIsOpen">
+      <TaskForm 
+      @closeModelBtn="closeModal"  
+      v-if="!isEditar"
+      :taskEditar="false"
+
       />
     </Modal>
     <Button
@@ -23,10 +25,10 @@
         v-for="task in allTask"
         :key="task.id"
       >
-        <Modal v-model="modalIsOpen">
+        <Modal v-if="isEditar"  v-model="modalIsOpen">
       <TaskForm @closeModelBtn="closeModal"  
           :Editar="isEditar" 
-          :task="isEditar ? task : null" 
+          :taskEditar="isEditar ? task : null" 
       />
     </Modal>
         <div class="h-panel">

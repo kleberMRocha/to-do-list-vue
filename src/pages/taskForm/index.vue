@@ -1,17 +1,16 @@
 <template>
   <div>
     <div>
-      <h1> <i class="h-icon-task"> </i> Adicionar nova Tarefa </h1>
+      <h1> <i class="h-icon-task"> </i> {{!isEditar ? 'Adicionar' : 'Editar' }} nova Tarefa </h1>
     </div>
     <Loading
       text="Loading"
       :loading="loading"
     ></Loading>
     <Form
+      v-if="!isEditar"
       ref="form"
       :label-width="150"
-      :rules="rules"
-      :model="data"
     >
       <FormItem
         label="Nome da tarefa"
@@ -62,17 +61,79 @@
         ></textarea>
       </FormItem>
       <FormItem>
-        <Button v-if="!isEditar" :loading="isLoading" @click="submit">
+        <Button
+          :loading="isLoading"
+          @click="submit"
+        >
           Adicionar
         </Button>
-         <Button v-else :loading="isLoading" @click="submit">
-          Atualizar
-        </Button>
-        
         <Button @click="closeModelBtn">Cancelar</Button>
       </FormItem>
     </Form>
-    {{task}}
+    <Form
+      v-if="isEditar"
+      ref="form"
+      :label-width="150"
+    >
+      <FormItem
+        label="Nome da tarefa"
+        prop="task"
+      >
+        <input
+          value="batata"
+          v-wordlimit="30"
+          :required="required"
+          type="text"
+          v-model="editData.task"
+        />
+      </FormItem>
+      <FormItem
+        label="Data de entrega"
+        prop="date"
+      >
+        <div>
+          <DatePicker
+            :required="required"
+            placeholder="Selecione uma data"
+            v-model="editData.deadline"
+            :format="format"
+          ></DatePicker>
+        </div>
+      </FormItem>
+      <FormItem
+        label="Prioridade"
+        prop="prioridade"
+      >
+        <Select
+          :required="required"
+          placeholder="Prioridade"
+          v-model="editData.priority"
+          :datas="param"
+        ></Select>
+      </FormItem>
+      <FormItem
+        label="Textarea"
+        :single="true"
+        prop="textareaData"
+      >
+        <textarea
+          rows="3"
+          v-autosize
+          v-wordcount="50"
+          v-model="editData.description"
+        ></textarea>
+      </FormItem>
+      <FormItem>
+        <Button
+          :loading="isLoading"
+          @click="update"
+        >
+          Atualizar
+        </Button>
+
+        <Button @click="closeModelBtn">Cancelar</Button>
+      </FormItem>
+    </Form>
   </div>
 </template>
 <script>
@@ -98,25 +159,39 @@ export default {
         description: null,
         completed: false
       },
+      editData: {
+        id: this.taskEditar.id ? this.taskEditar.id : '',
+        task: this.taskEditar.task ? this.taskEditar.task : '',
+        deadline: this.taskEditar.deadline ? this.taskEditar.deadline : '',
+        startDate: this.taskEditar.startDate ? this.taskEditar.startDate : '',
+        priority: this.taskEditar.priority ? this.taskEditar.priority : '',
+        description: this.taskEditar.description ? this.taskEditar.description : '',
+        completed: false
+      },
     };
   },
   methods: {
-    ...mapActions(['addValue']),
+    ...mapActions(['addValue','updateValue']),
     closeModelBtn () {
       this.$emit('closeModelBtn');
-       this.loading = false;
+      this.loading = false;
     },
     submit () {
       if (this.data.task && this.data.deadline) {
         this.$Message('Tarefa Adicionada com sucesso!');
         this.addValue(this.data);
- 
+
       } else {
         this.$Message.error('Tarefa deve ter um Nome e uma data de entrega');
       }
+    },
+    update () {
+      this.$Message('Tarefa alterada com sucesso');
+      console.log()
+      this.updateValue(this.editData);
     }
   },
-  props: ['task', 'Editar'],
+  props: ['taskEditar', 'Editar'],
   computed: {
     hoje: () => {
       const hoje = new Date();
