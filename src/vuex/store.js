@@ -29,8 +29,15 @@ const store = new Vuex.Store({
       });
     },
     updateTask: (state, data) => {
-      console.log(state, data);
-
+    const newState =   state.map(task => {
+        if(task.id === data.id){
+          task = data;
+          return task;
+        }
+        return task;
+      });
+     state.length = 0;
+     state.push(...newState);
     },
   },
   actions: {

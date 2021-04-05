@@ -28,7 +28,7 @@
         <Modal v-if="isEditar"  v-model="modalIsOpen">
       <TaskForm @closeModelBtn="closeModal"  
           :Editar="isEditar" 
-          :taskEditar="isEditar ? task : null" 
+          :taskEditar="isEditar ? currentTask : null" 
       />
     </Modal>
         <div class="h-panel">
@@ -97,7 +97,7 @@
               <div class="buttons">
                 <ButtonGroup size="s">
                   <Button
-                    @click="openModalEditar"
+                    @click="openModalEditar(task)"
                     class="h-btn h-btn-text-yellow h-btn-transparent"
                     icon="h-icon-edit"
                   >
@@ -138,6 +138,7 @@ export default {
     return {
       isEditar: false,
       modalIsOpen: false,
+      currentTask:{}
     };
   },
   computed: {
@@ -159,12 +160,16 @@ export default {
       this.isEditar = false;
       this.modalIsOpen = true;
     },
+      setEditTask: function(task){
+      this.currentTask = task;
+    },
     closeModal: function () {
       this.modalIsOpen = false;
     },
-    openModalEditar: function () {
+    openModalEditar: function (task) {
       this.isEditar = true;
       this.modalIsOpen = true;
+      this.setEditTask(task);
     },
      confirm(id) {
       this.$Confirm('Deletar a Tarefa?', 'Deletar?')

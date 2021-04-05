@@ -187,7 +187,6 @@ export default {
     },
     update () {
       this.$Message('Tarefa alterada com sucesso');
-      console.log()
       this.updateValue(this.editData);
     }
   },

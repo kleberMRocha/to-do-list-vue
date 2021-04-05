@@ -1,22 +1,29 @@
 {
   "tasks": [
     {
-      "id": "3ed0160d-6c3a-41f9-b17a-ac756e25b31d",
-      "task": "Programar ",
-      "deadline": "19/03/2021",
-      "priority": "Baixa",
-      "description": "adasdadasd",
-      "completed": false,
-      "startDate": ""
-    },
-    {
       "id": "026097bb-eff9-4da6-9339-b21b6a96bff3",
-      "task": "Fazer compras",
+      "task": "TESTE",
       "deadline": "24/03/2021",
       "priority": "Alta",
       "description": "45454",
       "completed": false,
       "startDate": ""
+    },
+    {
+      "id": "931fd9e8-2794-4f27-a789-9e64b7b46ee6",
+      "task": "Estudar VUE",
+      "deadline": "05/04/2021",
+      "priority": "Media",
+      "description": "Estudar",
+      "completed": false
+    },
+    {
+      "id": "f1bbda52-9ba0-4777-b49b-75ade9cd53f1",
+      "task": "Estudar Ux",
+      "deadline": "06/04/2021",
+      "priority": "Baixa",
+      "description": "Estudar",
+      "completed": false
     }
   ]
 }
